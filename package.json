@@ -1,0 +1,23 @@
+{
+  "name": "thirdweb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.ts",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "app": "tsc && node dist/app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^4.5.4"
+  },
+  "dependencies": {
+    "@3rdweb/sdk": "^1.36.2",
+    "@types/node": "^17.0.10",
+    "csv-parse": "^5.0.4",
+    "dotenv": "^14.2.0"
+  }
+}
