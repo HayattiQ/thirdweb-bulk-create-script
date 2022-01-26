@@ -6,10 +6,11 @@ const Papa = require("papaparse");
 require('dotenv').config();
 
 const PRIVATE_KEY = process.env["PRIVATE_KEY"] as string;
-const DROP_MODULE = "0x1d6871e300D0262062634a76AE427D2e1d92f92a";
-const CSV_PATH = "./input/metadata.csv";
+const DROP_MODULE = process.env["DROP_MODULE"] as string;
+const CSV_PATH = process.env["CSV_PATH"] as string;
+const PROVIDER = process.env["PROVIDER"] as string;
 
-const wallet = new ethers.Wallet(PRIVATE_KEY, ethers.getDefaultProvider("https://rpc-mumbai.maticvigil.com"));
+const wallet = new ethers.Wallet(PRIVATE_KEY, ethers.getDefaultProvider(PROVIDER));
 const sdk = new ThirdwebSDK(wallet);
 
 type Meta = {
