@@ -6,7 +6,7 @@ const Papa = require("papaparse");
 require('dotenv').config();
 
 const PRIVATE_KEY = process.env["PRIVATE_KEY"] as string;
-const DROP_MODULE = "0xcb04ec5015856D367a3DA3376D349EF8dA9F621F";
+const DROP_MODULE = "0x1d6871e300D0262062634a76AE427D2e1d92f92a";
 const CSV_PATH = "./input/metadata.csv";
 
 const wallet = new ethers.Wallet(PRIVATE_KEY, ethers.getDefaultProvider("https://rpc-mumbai.maticvigil.com"));
@@ -26,7 +26,6 @@ type Meta = {
 }
 
 const convertToMetaRow = async (row: any): Promise<Meta> => {
-
   let metadata: Meta = {
     name: row.name,
     description: row.description,
@@ -39,10 +38,10 @@ const convertToMetaRow = async (row: any): Promise<Meta> => {
   for (let [key, value] of Object.entries(row)) {
     if (!["name", "description", "external_url", "background_color", "path"].includes(key)) {
       // @ts-ignore
-      metadata.attributes[key as string] = {
+      metadata.attributes.push({
         value: value as string,
         trait_type: key as string,
-      };
+      });
     }
   };
   return metadata;
