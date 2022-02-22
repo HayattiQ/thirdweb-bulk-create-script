@@ -7,6 +7,7 @@
     "strict": true,
     "resolveJsonModule": true,
     "importsNotUsedAsValues": "error",
+    "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,

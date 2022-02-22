@@ -1,14 +1,15 @@
 
 import { ThirdwebSDK } from "@3rdweb/sdk";
 import { ethers } from "ethers";
-const fs = require("fs");
+import * as webconfig from "./webconfig.json";
+import fs = require("fs");
 const Papa = require("papaparse");
 require('dotenv').config();
 
 const PRIVATE_KEY = process.env["PRIVATE_KEY"] as string;
-const DROP_MODULE = process.env["DROP_MODULE"] as string;
-const CSV_PATH = process.env["CSV_PATH"] as string;
-const PROVIDER = process.env["PROVIDER"] as string;
+const DROP_MODULE = webconfig.MODULE as string;
+const CSV_PATH = webconfig.CSV_PATH as string;
+const PROVIDER = webconfig.PROVIDER as string;
 
 const wallet = new ethers.Wallet(PRIVATE_KEY, ethers.getDefaultProvider(PROVIDER));
 const sdk = new ThirdwebSDK(wallet);
