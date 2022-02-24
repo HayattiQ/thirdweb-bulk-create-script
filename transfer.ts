@@ -8,11 +8,19 @@ require('dotenv').config();
 const PRIVATE_KEY = process.env["PRIVATE_KEY"] as string;
 const MODULE = webconfig.MODULE as string;
 const PROVIDER = webconfig.PROVIDER as string;
-const token_id = "1";
 
 type WalletAddress = {
   address: string;
   amount: number;
+}
+
+type TransferLog = {
+  data: {
+    hash: string;
+    to: string;
+    amount: number;
+  }[],
+  error: any
 }
 
 
@@ -23,11 +31,25 @@ function readJson(filepath: string): WalletAddress[] {
 
 const transfer = async (wallet_address: WalletAddress[], module: BundleModule): Promise<void> => {
   let receipt;
-  console.log("transfer_address", wallet_address);
-  for (const ad of wallet_address) {
-    receipt = await module.transfer(ad.address, token_id, ad.amount)
-    console.log("transfer done.hash:", receipt.transactionHash, " - to:", ad.address, " - amount:", ad.amount);
+  let log: TransferLog = { data: [], error: undefined };
+
+  try {
+    for (const ad of wallet_address) {
+      receipt = await module.transfer(ad.address, webconfig.TOKEN_ID, ad.amount)
+      log.data.push({
+        hash: receipt.transactionHash,
+        to: ad.address,
+        amount: ad.amount
+      });
+      console.log("transfer done.hash:", receipt.transactionHash, " - to:", ad.address, " - amount:", ad.amount);
+    }
+    fs.writeFileSync('./log/output.' + Date.now() + '.json', JSON.stringify(log, undefined, 1));
+  } catch (error) {
+    console.error("error found." + error);
+    log.error = error;
+    fs.writeFileSync('./log/error.json', JSON.stringify(log, undefined, 1));
   }
+
 }
 
 
@@ -36,14 +58,11 @@ const main = async () => {
   const wallet = new ethers.Wallet(PRIVATE_KEY, ethers.getDefaultProvider(PROVIDER));
   const sdk = new ThirdwebSDK(wallet);
   const bundle = sdk.getBundleModule(MODULE);
-  //await bundle.setRestrictedTransfer(false);
+  await bundle.setRestrictedTransfer(false);
   transfer(wallet_address, bundle);
-  /*
-  await bundle.setRestrictedTransfer(true);*/
+  if (webconfig.RESTRICTED_TRANSFER) {
+    await bundle.setRestrictedTransfer(true);
+  }
 }
 
 main();
-
-function mapResult(v: WalletAddress): WalletAddress | PromiseLike<WalletAddress> {
-  return { address: v.address, amount: v.amount };
-}

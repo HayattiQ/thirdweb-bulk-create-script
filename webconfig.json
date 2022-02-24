@@ -2,5 +2,7 @@
   "CSV_PATH": "./input/metadata.csv",
   "TRANSFER_INPUT_PATH": "./input/wallet_address.json",
   "PROVIDER": "https://rpc-mumbai.maticvigil.com",
+  "TOKEN_ID": "1",
+  "RESTRICTED_TRANSFER": false,
   "MODULE": "0x51b05199A21f1a1aE1f9536587F385c38684B7a1"
 }
