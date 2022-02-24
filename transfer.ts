@@ -47,7 +47,7 @@ const transfer = async (wallet_address: WalletAddress[], module: BundleModule): 
   } catch (error) {
     console.error("error found." + error);
     log.error = error;
-    fs.writeFileSync('./log/error.json', JSON.stringify(log, undefined, 1));
+    fs.writeFileSync('./log/error.' + Date.now() + '.json', JSON.stringify(log, undefined, 1));
   }
 
 }
@@ -59,7 +59,7 @@ const main = async () => {
   const sdk = new ThirdwebSDK(wallet);
   const bundle = sdk.getBundleModule(MODULE);
   await bundle.setRestrictedTransfer(false);
-  transfer(wallet_address, bundle);
+  await transfer(wallet_address, bundle);
   if (webconfig.RESTRICTED_TRANSFER) {
     await bundle.setRestrictedTransfer(true);
   }
