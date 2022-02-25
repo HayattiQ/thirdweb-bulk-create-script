@@ -8,7 +8,7 @@ require('dotenv').config();
 
 const PRIVATE_KEY = process.env["PRIVATE_KEY"] as string;
 const DROP_MODULE = webconfig.MODULE as string;
-const CSV_PATH = webconfig.CSV_PATH as string;
+const CSV_PATH = process.env["CSV_PATH"] as string;
 const PROVIDER = webconfig.PROVIDER as string;
 
 const wallet = new ethers.Wallet(PRIVATE_KEY, ethers.getDefaultProvider(PROVIDER));
